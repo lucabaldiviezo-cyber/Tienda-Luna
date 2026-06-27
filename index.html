@@ -971,6 +971,215 @@
         .cart-sidebar.open { right: 0; }
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.25); backdrop-filter: blur(8px); display: none; z-index: 1999; }
         .sidebar-overlay.active { display: block; }
+
+        /* ==========================================================================
+           OPTIMIZACIÓN RESPONSIVA (MOBILE FIRST DISPOSITIVOS MÓVILES)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            /* Reset Global de Desplazamiento Lateral */
+            body, html {
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            /* Header Principal Estilizado en Móviles */
+            .header-container {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .logo {
+                font-size: 24px;
+                letter-spacing: -1px;
+            }
+
+            /* Buscador ocupa ancho completo abajo del logo en mobile */
+            .search-bar {
+                order: 3;
+                width: 100%;
+            }
+
+            .search-bar input {
+                padding: 10px 40px 10px 14px;
+                font-size: 12px;
+            }
+
+            .header-actions {
+                gap: 15px;
+            }
+
+            .action-item span {
+                display: none; /* Oculta el texto "Mi cuenta" para optimizar espacio, queda el ícono */
+            }
+
+            /* Menú de Navegación con Scroll Horizontal Fluido */
+            .nav-menu ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 5px 10px;
+                scrollbar-width: none; /* Oculta scrollbar en Firefox */
+            }
+
+            .nav-menu ul::-webkit-scrollbar {
+                display: none; /* Oculta scrollbar en Chrome/Safari */
+            }
+
+            .nav-item {
+                padding: 10px 12px;
+                flex-shrink: 0;
+            }
+
+            .nav-item a {
+                font-size: 11px;
+                white-space: nowrap;
+            }
+
+            /* Hero Slider Adaptado */
+            .slider-container {
+                height: auto;
+                padding: 40px 0;
+            }
+
+            .slide-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+                width: 90%;
+            }
+
+            .floating-shoe {
+                width: 80%;
+                max-width: 280px;
+                transform: rotate(-10deg) scale(1);
+            }
+
+            @keyframes floatEffect {
+                0% { transform: translateY(0) rotate(-10deg); }
+                50% { transform: translateY(-12px) rotate(-7deg); }
+                100% { transform: translateY(0) rotate(-10deg); }
+            }
+
+            .slide-text h2 {
+                font-size: 48px;
+            }
+
+            .slide-text p {
+                font-size: 12px;
+                letter-spacing: 4px;
+                margin-bottom: 25px;
+            }
+
+            /* Sección Cuotas y Tarjetas del Carrusel */
+            .carousel-wrapper {
+                padding: 0 20px;
+            }
+
+            .carousel-arrow {
+                display: none !important; /* En celular el scroll nativo táctil es mejor que las flechas */
+            }
+
+            .inst-card {
+                flex: 0 0 85vw; /* Muestra una tarjeta casi completa y asoma la siguiente */
+                min-width: 270px;
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .inst-bank-logo {
+                width: 70px;
+                font-size: 9px;
+                padding-right: 10px;
+            }
+
+            .inst-info h4 {
+                font-size: 11px;
+            }
+
+            /* Grids de Categorías, Vitrinas y Productos */
+            .categories-grid, 
+            .premium-display-grid, 
+            #catalog-products-grid {
+                grid-template-columns: 1fr !important; /* Apilado vertical impecable */
+                gap: 20px;
+            }
+
+            .category-box {
+                height: 250px; /* Reducción de altura para no cansar al hacer scroll */
+            }
+
+            .premium-img-wrapper {
+                height: 280px;
+            }
+
+            .premium-details {
+                padding: 20px;
+            }
+
+            .premium-details h3 {
+                font-size: 18px;
+            }
+
+            /* Bloque Shop The Look */
+            .look-container {
+                flex-direction: column;
+            }
+
+            .look-banner {
+                min-height: 350px;
+            }
+
+            .look-product-panel {
+                padding: 30px 20px;
+                text-align: center;
+            }
+
+            /* Vista de Catálogo (Filtros y Sidebar Asiduo) */
+            #catalog-view > div {
+                flex-direction: column; /* Coloca los filtros arriba de los productos */
+                gap: 30px;
+            }
+
+            #catalog-view aside {
+                width: 100% !important;
+                position: relative !important;
+                top: 0 !important;
+                padding-right: 0;
+                border-bottom: 1px solid #edf2f7;
+                padding-bottom: 20px;
+            }
+
+            /* Carrito de Compras Lateral (Slide-in Mobile) */
+            .cart-sidebar {
+                width: 85vw;
+                right: -87vw;
+                padding: 25px;
+            }
+
+            /* Footer Institucional */
+            .footer-container {
+                grid-template-columns: 1fr !important;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            /* Ajuste del Botón Flotante de WhatsApp */
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+        }
     </style>
 </head>
 <body id="top">
@@ -1081,7 +1290,7 @@
                     </div>
 
                     <div class="inst-card">
-                        <div class="inst-bank-logo"><span style="color:#9efd38; background:#000; padding:2px 6px; border-radius:4px; font-weight:900;">modo</span></div>
+                        <div class="inst-bank-logo"><i class="fa-solid fa-wallet" style="color:#9efd38; background:#000; padding:2px 6px; border-radius:4px; font-weight:900;">modo</i></div>
                         <div class="inst-content">
                             <div class="inst-info"><h4>HASTA 3 CUOTAS SIN INTERÉS</h4><p>SIN DESCUENTO</p></div>
                             <div class="inst-footer"><div class="card-brands"><span class="brand-visa">VISA</span><span class="brand-master">MC</span><span class="brand-amex">AMEX</span></div><span class="inst-legal">Ver legales</span></div>
@@ -1295,7 +1504,7 @@
                 </div>
                 
                 <div id="catalog-products-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;">
-                    </div>
+                </div>
             </main>
         </div>
     </section>
