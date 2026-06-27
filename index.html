@@ -30,7 +30,7 @@
         }
 
         html {
-            scroll-behavior: smooth; /* Hace que el retorno al inicio sea suave */
+            scroll-behavior: smooth;
         }
 
         body {
@@ -38,6 +38,21 @@
             color: #000000;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* ==========================================================================
+           NUEVAS CLASES PARA ANIMACIÓN CON SCROLL (INTERSECTION OBSERVER)
+           ========================================================================== */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--cb-premium), transform 0.8s var(--cb-premium);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.active-reveal {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ==========================================================================
@@ -72,7 +87,6 @@
             100% { opacity: 1; transform: scale(1); letter-spacing: 4px; }
         }
 
-        /* Clase para retirar el preloader con estilo cortina */
         .loaded #preloader {
             transform: translateY(-100%);
         }
@@ -129,7 +143,6 @@
             padding: 18px 20px;
         }
 
-        /* Cambio de h1 a enlace estilizado */
         .logo {
             font-size: 30px;
             font-weight: 900;
@@ -207,7 +220,7 @@
         }
 
         /* ==========================================================================
-           NAV MENU (ANIMACIÓN MINIMALISTA MEJORADA PC/MÓVIL)
+           NAV MENU
            ========================================================================== */
         .nav-menu ul {
             display: flex;
@@ -276,12 +289,12 @@
         }
 
         /* ==========================================================================
-           SLIDER PRINCIPAL
+           SLIDER PRINCIPAL (PAN CARTA INICIAL PREPARADA)
            ========================================================================= */
         .slider-container {
             position: relative;
             width: 100%;
-            height: 540px;
+            min-height: 580px;
             overflow: hidden;
             background-color: #000;
         }
@@ -296,9 +309,10 @@
             position: absolute;
             width: 100%;
             height: 100%;
+            min-height: 580px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), visibility 0.8s;
+            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), visibility 1s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -396,7 +410,20 @@
         .btn-shop:hover::before { transform: scaleX(1); transform-origin: left; }
 
         /* ==========================================================================
-           SECCIÓN CUOTAS (CARRUSEL INTERACTIVO)
+           SECCIONES CON ESTRUCTURA ANIMADA DE INTERCAMBIO
+           ========================================================================== */
+        #home-view, #catalog-view {
+            transition: opacity 0.5s ease, transform 0.5s var(--cb-premium);
+            will-change: transform, opacity;
+        }
+
+        .view-hidden-state {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        /* ==========================================================================
+           SECCIÓN CUOTAS
            ========================================================================== */
         .installments-section {
             background-color: #ffffff;
@@ -592,10 +619,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .premium-display-grid { grid-template-columns: 1fr; }
         }
 
         .premium-card {
@@ -805,7 +828,7 @@
         }
 
         /* ==========================================================================
-           NEWSLETTER CON BENEFICIO INMEDIATO
+           NEWSLETTER
            ========================================================================== */
         .newsletter-section {
             background-color: #000000;
@@ -869,7 +892,7 @@
         }
 
         /* ==========================================================================
-           FOOTER INSTITUCIONAL COMPLETO
+           FOOTER
            ========================================================================== */
         .main-footer {
             background: #f8f8fa;
@@ -976,13 +999,11 @@
            OPTIMIZACIÓN RESPONSIVA (MOBILE FIRST DISPOSITIVOS MÓVILES)
            ========================================================================== */
         @media (max-width: 768px) {
-            /* Reset Global de Desplazamiento Lateral */
             body, html {
                 position: relative;
                 overflow-x: hidden;
             }
 
-            /* Header Principal Estilizado en Móviles */
             .header-container {
                 padding: 12px 15px;
                 flex-wrap: wrap;
@@ -994,7 +1015,6 @@
                 letter-spacing: -1px;
             }
 
-            /* Buscador ocupa ancho completo abajo del logo en mobile */
             .search-bar {
                 order: 3;
                 width: 100%;
@@ -1010,21 +1030,20 @@
             }
 
             .action-item span {
-                display: none; /* Oculta el texto "Mi cuenta" para optimizar espacio, queda el ícono */
+                display: none;
             }
 
-            /* Menú de Navegación con Scroll Horizontal Fluido */
             .nav-menu ul {
                 justify-content: flex-start;
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 padding: 5px 10px;
-                scrollbar-width: none; /* Oculta scrollbar en Firefox */
+                scrollbar-width: none;
             }
 
             .nav-menu ul::-webkit-scrollbar {
-                display: none; /* Oculta scrollbar en Chrome/Safari */
+                display: none;
             }
 
             .nav-item {
@@ -1037,10 +1056,23 @@
                 white-space: nowrap;
             }
 
-            /* Hero Slider Adaptado */
             .slider-container {
                 height: auto;
+                min-height: auto;
                 padding: 40px 0;
+            }
+
+            .slide {
+                position: relative;
+                height: auto;
+                min-height: auto;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+            }
+
+            .slide.active {
+                display: flex;
             }
 
             .slide-content {
@@ -1072,17 +1104,16 @@
                 margin-bottom: 25px;
             }
 
-            /* Sección Cuotas y Tarjetas del Carrusel */
             .carousel-wrapper {
                 padding: 0 20px;
             }
 
             .carousel-arrow {
-                display: none !important; /* En celular el scroll nativo táctil es mejor que las flechas */
+                display: none !important;
             }
 
             .inst-card {
-                flex: 0 0 85vw; /* Muestra una tarjeta casi completa y asoma la siguiente */
+                flex: 0 0 85vw;
                 min-width: 270px;
                 padding: 16px;
                 gap: 12px;
@@ -1098,16 +1129,15 @@
                 font-size: 11px;
             }
 
-            /* Grids de Categorías, Vitrinas y Productos */
             .categories-grid, 
             .premium-display-grid, 
             #catalog-products-grid {
-                grid-template-columns: 1fr !important; /* Apilado vertical impecable */
+                grid-template-columns: 1fr !important;
                 gap: 20px;
             }
 
             .category-box {
-                height: 250px; /* Reducción de altura para no cansar al hacer scroll */
+                height: 250px;
             }
 
             .premium-img-wrapper {
@@ -1122,7 +1152,6 @@
                 font-size: 18px;
             }
 
-            /* Bloque Shop The Look */
             .look-container {
                 flex-direction: column;
             }
@@ -1136,9 +1165,8 @@
                 text-align: center;
             }
 
-            /* Vista de Catálogo (Filtros y Sidebar Asiduo) */
             #catalog-view > div {
-                flex-direction: column; /* Coloca los filtros arriba de los productos */
+                flex-direction: column;
                 gap: 30px;
             }
 
@@ -1151,14 +1179,12 @@
                 padding-bottom: 20px;
             }
 
-            /* Carrito de Compras Lateral (Slide-in Mobile) */
             .cart-sidebar {
                 width: 85vw;
                 right: -87vw;
                 padding: 25px;
             }
 
-            /* Footer Institucional */
             .footer-container {
                 grid-template-columns: 1fr !important;
                 gap: 30px;
@@ -1171,7 +1197,6 @@
                 text-align: center;
             }
 
-            /* Ajuste del Botón Flotante de WhatsApp */
             .whatsapp-float {
                 bottom: 20px;
                 right: 20px;
@@ -1244,7 +1269,7 @@
             </div>
         </section>
 
-        <section class="installments-section">
+        <section class="installments-section reveal-element">
             <div class="carousel-wrapper">
                 <button class="carousel-arrow left-arrow" id="inst-prev"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="installments-carousel" id="inst-carousel">
@@ -1303,7 +1328,7 @@
             <div class="carousel-dots" id="carousel-dots-container"></div>
         </section>
 
-        <section class="categories-section">
+        <section class="categories-section reveal-element">
             <div class="categories-grid">
                 <div class="category-box" id="box-urbano" style="background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=600&auto=format&fit=crop');">
                     <div class="category-text">
@@ -1326,7 +1351,7 @@
             </div>
         </section>
 
-        <section class="premium-display-section">
+        <section class="premium-display-section reveal-element">
             <h2 class="section-title">Sneakers</h2>
             <div class="premium-display-grid">
                 
@@ -1381,7 +1406,7 @@
             </div>
         </section>
 
-        <section class="premium-display-section">
+        <section class="premium-display-section reveal-element">
             <h2 class="section-title">Looks destacados</h2>
             <div class="premium-display-grid">
                 
@@ -1436,7 +1461,7 @@
             </div>
         </section>
 
-        <section class="shop-look-section">
+        <section class="shop-look-section reveal-element">
             <h2 class="section-title">Completa tu look</h2>
             <div class="look-container">
                 <div class="look-banner" style="background-image: url('https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=800&auto=format&fit=crop');">
@@ -1570,9 +1595,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // LÓGICA DEL PRELOADER: Retira la cortina una vez cargada la estructura base
+            // LÓGICA DEL PRELOADER
             setTimeout(() => {
                 document.body.classList.add("loaded");
+                initScrollAnimations(); // Inicia el observador después del preloader
             }, 1200);
 
             // Panel de Carrito y Cuenta
@@ -1603,7 +1629,7 @@
                 }, { passive: true });
             });
 
-            // Carrusel de Cuotas Dinámico
+            // Carrusel de Cuotas
             const instCarousel = document.getElementById("inst-carousel");
             const instPrev = document.getElementById("inst-prev");
             const instNext = document.getElementById("inst-next");
@@ -1634,14 +1660,35 @@
                 dots.forEach((d, i) => i === index ? d.classList.add("active") : d.classList.remove("active"));
             });
 
-            // --- LÓGICA INTEGRADA DE CATÁLOGO Y SECCIONES ---
+            // --- LÓGICA DE DETECCIÓN DE SCROLL (REVEAL ANIMATIONS) ---
+            function initScrollAnimations() {
+                const revealElements = document.querySelectorAll(".reveal-element");
+                
+                const observerOptions = {
+                    root: null,
+                    threshold: 0.15, // Se activa cuando el 15% del elemento asoma en pantalla
+                    rootMargin: "0px 0px -50px 0px"
+                };
+
+                const scrollObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("active-reveal");
+                            observer.unobserve(entry.target); // Animación única por sesión de scroll
+                        }
+                    });
+                }, observerOptions);
+
+                revealElements.forEach(el => scrollObserver.observe(el));
+            }
+
+            // --- LÓGICA INTEGRADA DE CATÁLOGO Y CAMBIOS DE SECCIÓN CON ANIMACIÓN ---
             const homeView = document.getElementById("home-view");
             const catalogView = document.getElementById("catalog-view");
             const catalogTitle = document.getElementById("catalog-title");
             const catalogCount = document.getElementById("catalog-count");
             const catalogProductsGrid = document.getElementById("catalog-products-grid");
 
-            // Base de datos de productos mapeada directamente con la estética original de la tienda
             const dbProductos = [
                 { id: 1, categoria: "HOMBRE", nombre: "Zapatillas Nike Air Max Performance", precio: 249999, tag: "Exclusive Drop", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop", specs: ["Suela React", "Mesh Respirable", "Limited Edition"] },
                 { id: 2, categoria: "MUJER", nombre: "Zapatillas Adidas Originals Forum Low", precio: 219999, tag: "Trending", img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=600&auto=format&fit=crop", specs: ["Cuero Premium", "Correa Ajustable", "Vintage Style"] },
@@ -1649,70 +1696,88 @@
             ];
 
             function mostrarCategoria(categoria) {
-                // Ocultar Home, mostrar Catálogo
-                homeView.style.display = "none";
-                catalogView.style.display = "block";
+                // Paso 1: Transición de salida de la vista activa actual
+                const vistaActiva = homeView.style.display !== "none" ? homeView : catalogView;
                 
-                // Actualizar encabezados
-                catalogTitle.innerText = categoria;
-                
-                // Filtrar del array centralizado
-                const productosFiltrados = dbProductos.filter(p => p.categoria === categoria);
-                catalogCount.innerText = `Mostrando ${productosFiltrados.length} productos`;
-                
-                // Limpiar e Inyectar tarjetas dinámicas con la misma estructura premium original
-                catalogProductsGrid.innerHTML = "";
-                if(productosFiltrados.length === 0) {
-                    catalogProductsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 60px; font-weight: 700; font-size: 14px; letter-spacing: 1px;">PRÓXIMAMENTE MÁS CONTENIDO EN ESTA SECCIÓN.</p>`;
-                    return;
-                }
+                vistaActiva.classList.add("view-hidden-state");
 
-                productosFiltrados.forEach(prod => {
-                    const cardHtml = `
-                        <div class="premium-card">
-                            <div class="premium-img-wrapper">
-                                <img src="${prod.img}" alt="${prod.nombre}">
-                                <span class="badge-premium-tag">${prod.tag}</span>
-                            </div>
-                            <div class="premium-details">
-                                <h3>${prod.nombre}</h3>
-                                <div class="premium-items-list">
-                                    ${prod.specs.map(s => `<span class="premium-item-tag">${s}</span>`).join('')}
-                                </div>
-                                <div class="premium-action-bar">
-                                    <div>
-                                        <p class="price">$${prod.precio.toLocaleString('es-AR')},00</p>
-                                        <p class="sub-price">6 cuotas s/interés de $${Math.round(prod.precio / 6).toLocaleString('es-AR')},50</p>
+                // Esperar a que termine la animación de fade-out (300ms)
+                setTimeout(() => {
+                    homeView.style.display = "none";
+                    catalogView.style.display = "block";
+                    
+                    catalogTitle.innerText = categoria;
+                    
+                    const productosFiltrados = dbProductos.filter(p => p.categoria === categoria);
+                    catalogCount.innerText = `Mostrando ${productosFiltrados.length} productos`;
+                    
+                    catalogProductsGrid.innerHTML = "";
+                    if(productosFiltrados.length === 0) {
+                        catalogProductsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 60px; font-weight: 700; font-size: 14px; letter-spacing: 1px;">PRÓXIMAMENTE MÁS CONTENIDO EN ESTA SECCIÓN.</p>`;
+                    } else {
+                        productosFiltrados.forEach((prod, index) => {
+                            const cardHtml = `
+                                <div class="premium-card reveal-element" style="transition-delay: ${index * 100}ms">
+                                    <div class="premium-img-wrapper">
+                                        <img src="${prod.img}" alt="${prod.nombre}">
+                                        <span class="badge-premium-tag">${prod.tag}</span>
                                     </div>
-                                    <button class="btn-shop-premium" onclick="agregarProductoAlCarrito('${prod.nombre}', ${prod.precio})">
-                                        COMPRAR <i class="fa-solid fa-bag-shopping"></i>
-                                    </button>
+                                    <div class="premium-details">
+                                        <h3>${prod.nombre}</h3>
+                                        <div class="premium-items-list">
+                                            ${prod.specs.map(s => `<span class="premium-item-tag">${s}</span>`).join('')}
+                                        </div>
+                                        <div class="premium-action-bar">
+                                            <div>
+                                                <p class="price">$${prod.precio.toLocaleString('es-AR')},00</p>
+                                                <p class="sub-price">6 cuotas s/interés de $${Math.round(prod.precio / 6).toLocaleString('es-AR')},50</p>
+                                            </div>
+                                            <button class="btn-shop-premium" onclick="agregarProductoAlCarrito('${prod.nombre}', ${prod.precio})">
+                                                COMPRAR <i class="fa-solid fa-bag-shopping"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    `;
-                    catalogProductsGrid.innerHTML += cardHtml;
-                });
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            `;
+                            catalogProductsGrid.innerHTML += cardHtml;
+                        });
+                    }
+
+                    // Paso 2: Quitar estado oculto para animar la entrada fluida
+                    catalogView.classList.remove("view-hidden-state");
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+
+                    // Re-ejecutar el observador para las nuevas tarjetas inyectadas
+                    setTimeout(() => {
+                        const nuevasTarjetas = catalogProductsGrid.querySelectorAll(".premium-card");
+                        nuevasTarjetas.forEach(card => card.classList.add("active-reveal"));
+                    }, 50);
+
+                }, 350);
             }
 
-            // Listeners interactivos del Menú de navegación principal
+            // Listeners Menu
             document.getElementById("nav-hombre").addEventListener("click", (e) => { e.preventDefault(); mostrarCategoria("HOMBRE"); });
             document.getElementById("nav-mujer").addEventListener("click", (e) => { e.preventDefault(); mostrarCategoria("MUJER"); });
             document.getElementById("nav-ninos").addEventListener("click", (e) => { e.preventDefault(); mostrarCategoria("NIÑOS"); });
-            
-            // Sección temporal para pestañas informativas adicionales
             document.getElementById("nav-new-in").addEventListener("click", (e) => { e.preventDefault(); mostrarCategoria("NEW IN"); });
             document.getElementById("nav-tendencias").addEventListener("click", (e) => { e.preventDefault(); mostrarCategoria("TENDENCIAS"); });
             document.getElementById("nav-sale").addEventListener("click", (e) => { e.preventDefault(); mostrarCategoria("70% OFF"); });
 
-            // Volver de manera fluida al Inicio haciendo clic en el logo LUNA
+            // Volver con transición al Inicio (Logo LUNA)
             document.querySelector(".logo").addEventListener("click", (e) => {
                 e.preventDefault();
-                catalogView.style.display = "none";
-                homeView.style.display = "block";
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if(catalogView.style.display !== "none") {
+                    catalogView.classList.add("view-hidden-state");
+                    setTimeout(() => {
+                        catalogView.style.display = "none";
+                        homeView.style.display = "block";
+                        homeView.classList.remove("view-hidden-state");
+                        window.scrollTo({ top: 0, behavior: 'auto' });
+                    }, 350);
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             });
         });
 
@@ -1725,7 +1790,7 @@
             const feedbackTexto = esLook ? "¡OUTFIT COMPLETO CARGADO!" : "¡SNEAKER SELECCIONADA!";
             
             cartSidebar.querySelector("p").innerHTML = `
-                <div style="background: #f7f7f9; padding: 20px; border-radius: 8px; border-left: 4px solid #000; text-align: left; margin-top: 20px;">
+                <div style="background: #f7f7f9; padding: 20px; border-radius: 8px; border-left: 4px solid #000; text-align: left; margin-top: 20px; animation: fadeInLogo 0.5s ease forwards;">
                     <p style="font-size: 11px; font-weight: 800; color: #888; letter-spacing: 0.5px;">${tipoEtiqueta}</p>
                     <p style="font-size: 13px; font-weight: 900; color: #000; margin-top: 2px;">${nombre.toUpperCase()}</p>
                     <p style="font-size: 14px; font-weight: 900; margin-top: 8px; color: #000;">$${precio.toLocaleString('es-AR')},00</p>
